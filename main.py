@@ -47,13 +47,31 @@ def handle_key_press(event):
 root = tk.Tk()
 root.title("Calculator")
 
+root.configure(bg = "#212121")
+
 result_var = tk.StringVar()
-result_entry = ttk.Entry(root, textvariable=result_var, font=("Helvetica", 24), justify="right")
+result_var_style = ttk.Style()
+
+result_entry = ttk.Entry(root, textvariable=result_var, font=("Times New Roman", 24), justify="right", foreground="white")
 result_entry.grid(row=0, column=0, columnspan=4, sticky="nsew")
+result_var_style.configure("default", background = "#212121") 
 
 style = ttk.Style()
 style.theme_use('default')
-style.configure("TButton", font=("Times New Roman", 16), width=10, height=4)
+style.configure("TButton", font=("Times New Roman", 24), width=10, height=4, foreground = "white", background = "#212121")
+
+result_entry_style = ttk.Style()
+result_entry_style.configure("TEntry", fieldbackground="#212121", foreground="white", font=("Times New Roman", 24))
+
+result_entry = ttk.Entry(
+    root, 
+    textvariable=result_var, 
+    justify="right", 
+    style="TEntry",
+    font=("Times New Roman", 32)
+)
+result_entry.grid(row=0, column=0, columnspan=4, sticky="nsew")
+
 
 buttons = [
     ("C", 1, 0), ("±", 1, 1), ("%", 1, 2), ("/", 1, 3),
@@ -67,9 +85,14 @@ for button_info in buttons:
     button_text, row, col = button_info[:3]
     colspan = button_info[3] if len(button_info) > 3 else 1
     button = ttk.Button(root, text=button_text, command=lambda text=button_text: handle_button_click(text), style="TButton")
+    button_style = ttk.Style()
+    button_style.configure("TButton", foreground = "white", background = "#212121")
     button.grid(row=row, column=col, columnspan=colspan, sticky="nsew", ipadx=10, ipady=4, padx=5, pady=5)
 
 for i in range(6):
+    if(i == 0):
+        root.grid_rowconfigure(i, weight=3)
+        i += 1
     root.grid_rowconfigure(i, weight=1)
 
 for i in range(4):
